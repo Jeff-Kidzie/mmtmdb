@@ -45,6 +45,8 @@ kotlin {
 
         androidMain.dependencies {
             implementation(libs.ktor.client.android)
+            api(libs.coil.compose)
+            api(libs.coil.network.okhttp)
         }
 
         commonTest.dependencies {
