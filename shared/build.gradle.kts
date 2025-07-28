@@ -31,13 +31,38 @@ kotlin {
             isStatic = true
         }
     }
-    
+
     sourceSets {
-        commonMain.dependencies {
-            //put your multiplatform dependencies here
+        val commonMain by getting {
+            dependencies {
+                implementation(libs.ktor.client.core)
+                implementation(libs.ktor.client.content.negotiation)
+                implementation(libs.ktor.serialization.kotlinx.json) // For JSON
+                implementation(libs.kotlinx.serialization.json)      // Core serialization library
+                implementation(libs.ktor.client.logging)
+            }
         }
+
+        androidMain.dependencies {
+            implementation(libs.ktor.client.android)
+        }
+
         commonTest.dependencies {
             implementation(libs.kotlin.test)
+        }
+
+        val iosX64Main by getting
+        val iosArm64Main by getting
+        val iosSimulatorArm64Main by getting
+
+        val iosMain by creating {
+            dependsOn(commonMain)
+            iosX64Main.dependsOn(this)
+            iosArm64Main.dependsOn(this)
+            iosSimulatorArm64Main.dependsOn(this)
+            dependencies {
+                implementation(libs.ktor.client.darwin)
+            }
         }
     }
 }
@@ -46,7 +71,7 @@ android {
     namespace = "com.kidzie.mmtmdb"
     compileSdk = 35
     defaultConfig {
-        minSdk = 24
+        minSdk = 30
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8

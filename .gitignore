@@ -47,3 +47,5 @@ captures/
 
 # Other
 .DS_Store
+
+.kotlin
